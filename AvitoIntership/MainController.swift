@@ -38,7 +38,7 @@ final class MainController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        layout.itemSize = CGSize(width: view.bounds.width - 40, height: 150)
+        layout.itemSize = CGSize(width: view.bounds.width - 40, height: 160)
         return layout
     }()
     
@@ -46,6 +46,7 @@ final class MainController: UIViewController {
         let button = UIButton()
         button.setTitle("Выбрать", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16)
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
         button.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
@@ -62,14 +63,14 @@ final class MainController: UIViewController {
     
     private func configure() {
         view.backgroundColor = .white
-        [closeIcon, textLabel, advertisingCollection, tapButton ].forEach {
+        [closeIcon, textLabel, advertisingCollection, tapButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
     
     private func addSubViews() {
         view.addSubview(advertisingCollection)
-        [closeIcon, textLabel, advertisingCollection, tapButton ].forEach {
+        [closeIcon, textLabel, advertisingCollection, tapButton].forEach {
             view.addSubview($0)
         }
     }
@@ -94,5 +95,4 @@ final class MainController: UIViewController {
             tapButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
     }
-    
 }
