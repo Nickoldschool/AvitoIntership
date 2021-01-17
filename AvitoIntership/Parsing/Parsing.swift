@@ -10,10 +10,8 @@ import Foundation
 protocol PassJson: AnyObject {
     
     func readLocalJson(jsonName: String) -> Data?
-    
-    func parseJson(jsonData: Data) -> [List]?
-    
-    //func loadJson(fileName: String) -> [List]?
+
+    func parseJson(jsonData: Data) -> (list: [List]?, title: String)
 }
 
 final class Parsing: PassJson {
@@ -30,26 +28,13 @@ final class Parsing: PassJson {
         return nil
     }
 
-    func parseJson(jsonData: Data) -> [List]? {
+    func parseJson(jsonData: Data) -> (list: [List]?, title: String) {
         do {
             let decodedData = try JSONDecoder().decode(JsonModel.self, from: jsonData)
-            return decodedData.result.list
+            return (decodedData.result.list,decodedData.result.title)
         } catch {
             print("Error is \(error)")
         }
-        return nil
+        return (nil,"")
     }
-    
-//    func loadJson(fileName: String) -> [List]? {
-//        if let url = Bundle.main.url(forResource: fileName, withExtension: "json") {
-//            do {
-//                let data = try Data(contentsOf: url)
-//                let jsonData = try JSONDecoder().decode(JsonModel.self, from: data)
-//                return jsonData.result.list
-//            } catch {
-//                print("Error: \(error)")
-//            }
-//        }
-//        return nil
-//    }
 }

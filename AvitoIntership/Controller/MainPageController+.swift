@@ -11,13 +11,15 @@ import UIKit
 extension MainPageController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = advertisingCollection.cellForItem(at: indexPath) as? MainPageCollectionCell {
-            cell.selectedImage.isHidden = false
+        if let cell = collectionView.cellForItem(at: indexPath) as? MainPageCollectionCell,
+           let text = cell.titleLabel.text {
+            cell.selectedImage.isHidden = (cell.selectedImage.isHidden == false) ? true : false
+            chosenText = (chosenText == text) ? nil : text
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let cell = advertisingCollection.cellForItem(at: indexPath) as? MainPageCollectionCell {
+        if let cell = collectionView.cellForItem(at: indexPath) as? MainPageCollectionCell {
             cell.selectedImage.isHidden = true
         }
     }
@@ -31,17 +33,10 @@ extension MainPageController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = advertisingCollection.dequeueReusableCell(withReuseIdentifier: MainPageCollectionCell.identifier, for: indexPath) as? MainPageCollectionCell,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainPageCollectionCell.identifier, for: indexPath) as? MainPageCollectionCell,
               let list = list?[indexPath.row]
         else { return UICollectionViewCell() }
         cell.update(list: list)
         return cell
-    }
-}
-
-extension MainPageController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
     }
 }

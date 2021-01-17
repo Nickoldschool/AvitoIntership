@@ -19,6 +19,8 @@ final class MainPageController: UIViewController {
     
     var list: [List]?
     
+    var chosenText: String?
+    
     private lazy var closeIcon: UIImageView = {
         let icon = UIImageView()
         icon.image = UIImage(named: "CloseIconTemplate")
@@ -28,14 +30,13 @@ final class MainPageController: UIViewController {
    
     private lazy var textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Сделайте объявление заметнее на 7 дней"
         label.font = .boldSystemFont(ofSize: 25)
         label.numberOfLines = 0
         label.textColor = .black
         return label
     }()
     
-    lazy var advertisingCollection: UICollectionView = {
+    private lazy var advertisingCollection: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: advertisingLayout)
         collection.register(MainPageCollectionCell.self, forCellWithReuseIdentifier: MainPageCollectionCell.identifier)
         collection.delegate = self
@@ -45,10 +46,11 @@ final class MainPageController: UIViewController {
         return collection
     }()
     
-    lazy var advertisingLayout: UICollectionViewFlowLayout = {
+    private lazy var advertisingLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: view.bounds.width - 40, height: 160)
+        layout.minimumLineSpacing = 15
         return layout
     }()
     
@@ -60,6 +62,7 @@ final class MainPageController: UIViewController {
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
         button.backgroundColor = UIColor(named: "BlueColor")
+        button.addTarget(self, action: #selector(callAlert), for: .touchUpInside)
         return button
     }()
     
@@ -81,9 +84,10 @@ final class MainPageController: UIViewController {
         
         jsonDelegate = parsing
         if let localData = self.jsonDelegate?.readLocalJson(jsonName: "result") {
-            list = (self.jsonDelegate?.parseJson(jsonData: localData))!
+            let type = (self.jsonDelegate?.parseJson(jsonData: localData))!
+            list = type.list
+            textLabel.text = type.title
         }
-        //jsonDelegate?.loadJson(fileName: "result")
     }
     
     private func addSubViews() {
@@ -112,5 +116,15 @@ final class MainPageController: UIViewController {
             tapButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             tapButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
         ])
+    }
+    
+    @objc private func callAlert() {
+        let alert = Alert()
+        if chosenText == nil {
+            alert.showAlert(vc: self, title: "Услуга не выбрана", text: "Пожалуйста, выберите услугу")
+        } else {
+            guard let text = chosenText else { return }
+            alert.showAlert(vc: self, title: "Выбранная услуга", text: text)
+        }
     }
 }

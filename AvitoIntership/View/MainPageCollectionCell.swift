@@ -13,12 +13,10 @@ final class MainPageCollectionCell: UICollectionViewCell {
     
     private lazy var iconImage: UIImageView = {
         let icon = UIImageView()
-        icon.contentMode = .scaleAspectFit
-        icon.image = UIImage(named: "checkmark")
         return icon
     }()
     
-    private lazy var titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 21)
@@ -90,8 +88,9 @@ final class MainPageCollectionCell: UICollectionViewCell {
             descriptionLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -80),
             
+            priceLabel.topAnchor.constraint(greaterThanOrEqualTo: descriptionLabel.bottomAnchor, constant: 10),
             priceLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 10),
-            priceLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
+            priceLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
             selectedImage.topAnchor.constraint(equalTo: topAnchor, constant: 30),
             selectedImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
@@ -103,6 +102,7 @@ final class MainPageCollectionCell: UICollectionViewCell {
             titleLabel.text = list.title
             descriptionLabel.text = list.description
             priceLabel.text = list.price
+            iconImage.downloaded(from: list.icon["52x52"]!)
         } else {
             contentView.isHidden = true
         }
