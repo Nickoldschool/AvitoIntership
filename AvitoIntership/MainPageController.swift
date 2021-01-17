@@ -1,5 +1,5 @@
 //
-//  MainController.swift
+//  MainPageController.swift
 //  AvitoIntership
 //
 //  Created by Nick Chekmazov on 03.01.2021.
@@ -7,7 +7,17 @@
 
 import UIKit
 
-final class MainController: UIViewController {
+
+final class MainPageController: UIViewController {
+    
+    
+    // MARK: - Delegate
+    
+    weak var jsonDelegate: PassJson?
+    
+    private let parsing = Parsing()
+    
+    var list: [List]?
     
     private lazy var closeIcon: UIImageView = {
         let icon = UIImageView()
@@ -27,17 +37,17 @@ final class MainController: UIViewController {
     
     lazy var advertisingCollection: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: advertisingLayout)
-        collection.register(MainCollectionCell.self, forCellWithReuseIdentifier: MainCollectionCell.identifier)
+        collection.register(MainPageCollectionCell.self, forCellWithReuseIdentifier: MainPageCollectionCell.identifier)
         collection.delegate = self
         collection.dataSource = self
         collection.backgroundColor = .white
+        collection.isScrollEnabled = false
         return collection
     }()
     
     lazy var advertisingLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         layout.itemSize = CGSize(width: view.bounds.width - 40, height: 160)
         return layout
     }()
@@ -49,7 +59,7 @@ final class MainController: UIViewController {
         button.titleLabel?.font = .systemFont(ofSize: 16)
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
-        button.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        button.backgroundColor = UIColor(named: "BlueColor")
         return button
     }()
     
@@ -66,6 +76,14 @@ final class MainController: UIViewController {
         [closeIcon, textLabel, advertisingCollection, tapButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        
+        //MARK: - Delegate
+        
+        jsonDelegate = parsing
+        if let localData = self.jsonDelegate?.readLocalJson(jsonName: "result") {
+            list = (self.jsonDelegate?.parseJson(jsonData: localData))!
+        }
+        //jsonDelegate?.loadJson(fileName: "result")
     }
     
     private func addSubViews() {
@@ -84,7 +102,7 @@ final class MainController: UIViewController {
             textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             
-            advertisingCollection.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 30),
+            advertisingCollection.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 25),
             advertisingCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             advertisingCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             advertisingCollection.heightAnchor.constraint(equalToConstant: view.bounds.height / 2),

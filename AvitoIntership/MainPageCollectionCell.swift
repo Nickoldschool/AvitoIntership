@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class MainCollectionCell: UICollectionViewCell {
+final class MainPageCollectionCell: UICollectionViewCell {
     
-    static let identifier = "MainCollectionCell"
+    static let identifier = "MainPageCollectionCell"
     
     private lazy var iconImage: UIImageView = {
         let icon = UIImageView()
@@ -20,35 +20,36 @@ final class MainCollectionCell: UICollectionViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "XL-объявление"
+        label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 21)
         label.textColor = .black
         return label
     }()
     
-    private lazy var textLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Пользователи смогут посмотреть фотографии, описание и телефон прямо из результатов поиска."
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 14)
         label.textColor = .black
         return label
     }()
     
-    private lazy var costLabel: UILabel = {
+    private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "356 ₽"
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = .black
         return label
     }()
     
-    private lazy var selectedImage: UIImageView = {
+    lazy var selectedImage: UIImageView = {
         let icon = UIImageView()
         icon.contentMode = .scaleAspectFit
         icon.image = UIImage(named: "checkmark")
+        icon.isHidden = true
         return icon
     }()
+    
+    var count = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,15 +64,15 @@ final class MainCollectionCell: UICollectionViewCell {
     }
     
     private func configure() {
-        contentView.backgroundColor = #colorLiteral(red: 0.9660613148, green: 0.9660613148, blue: 0.9660613148, alpha: 1)
+        contentView.backgroundColor = UIColor(named: "WhiteColor")
         contentView.layer.cornerRadius = 5
-        [iconImage, titleLabel, textLabel, costLabel, selectedImage].forEach {
+        [iconImage, titleLabel, descriptionLabel, priceLabel, selectedImage].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
     
     private func addSubViews() {
-        [iconImage, titleLabel, textLabel, costLabel, selectedImage].forEach {
+        [iconImage, titleLabel, descriptionLabel, priceLabel, selectedImage].forEach {
             contentView.addSubview($0)
         }
     }
@@ -83,17 +84,28 @@ final class MainCollectionCell: UICollectionViewCell {
             
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -60),
             
-            textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            textLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 10),
-            textLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -80),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+            descriptionLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 10),
+            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -80),
             
-            costLabel.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 15),
-            costLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 10),
+            priceLabel.leadingAnchor.constraint(equalTo: iconImage.trailingAnchor, constant: 10),
+            priceLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
             
             selectedImage.topAnchor.constraint(equalTo: topAnchor, constant: 30),
             selectedImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
     }
     
+    func update(list: List) {
+        if list.isSelected == true {
+            titleLabel.text = list.title
+            descriptionLabel.text = list.description
+            priceLabel.text = list.price
+        } else {
+            contentView.isHidden = true
+        }
+    }
 }
+
