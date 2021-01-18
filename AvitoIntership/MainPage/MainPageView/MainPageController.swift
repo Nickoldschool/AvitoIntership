@@ -7,17 +7,27 @@
 
 import UIKit
 
+protocol MainPageControllerInput: AnyObject {
+    func showData(list: [List], titleText: String)
+}
+
+protocol MainPageControllerOutput {
+    func viewDidLoad()
+    
+    func loadAlert(chosenText: String, view: UIViewController)
+}
 
 final class MainPageController: UIViewController {
     
+    //MARK: - Presenter
     
-    // MARK: - Delegate
+    var presenter: MainPageControllerOutput?
     
-    weak var jsonDelegate: PassJson?
+    //MARK: - Cell
     
-    private let parsing = Parsing()
-    
-    var list: [List]?
+    var cell: MainPageCollectionCellInput?
+
+    var listToShow: [List]?
     
     var chosenText: String?
     
@@ -27,7 +37,7 @@ final class MainPageController: UIViewController {
         icon.contentMode = .scaleAspectFit
         return icon
     }()
-   
+    
     private lazy var textLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 25)
@@ -72,21 +82,13 @@ final class MainPageController: UIViewController {
         configure()
         addSubViews()
         addConstraints()
+        presenter?.viewDidLoad()  // ask presenter to load data
     }
     
     private func configure() {
         view.backgroundColor = .white
         [closeIcon, textLabel, advertisingCollection, tapButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
-        //MARK: - Delegate
-        
-        jsonDelegate = parsing
-        if let localData = self.jsonDelegate?.readLocalJson(jsonName: "result") {
-            let type = (self.jsonDelegate?.parseJson(jsonData: localData))!
-            list = type.list
-            textLabel.text = type.title
         }
     }
     
@@ -110,7 +112,7 @@ final class MainPageController: UIViewController {
             advertisingCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             advertisingCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             advertisingCollection.heightAnchor.constraint(equalToConstant: view.bounds.height / 2),
-
+            
             tapButton.widthAnchor.constraint(equalToConstant: view.bounds.width - 40),
             tapButton.heightAnchor.constraint(equalToConstant: 50),
             tapButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -118,13 +120,19 @@ final class MainPageController: UIViewController {
         ])
     }
     
+    private func setTitleText(text: String) {
+        textLabel.text = text
+    }
+    
     @objc private func callAlert() {
-        let alert = Alert()
-        if chosenText == nil {
-            alert.showAlert(vc: self, title: "Услуга не выбрана", text: "Пожалуйста, выберите услугу")
-        } else {
-            guard let text = chosenText else { return }
-            alert.showAlert(vc: self, title: "Выбранная услуга", text: text)
-        }
+        presenter?.loadAlert(chosenText: chosenText ?? "", view: self) // ask presenter to load alert
+    }
+}
+
+extension MainPageController: MainPageControllerInput {
+    
+    func showData(list: [List], titleText: String) {
+        setTitleText(text: titleText)
+        listToShow = list
     }
 }

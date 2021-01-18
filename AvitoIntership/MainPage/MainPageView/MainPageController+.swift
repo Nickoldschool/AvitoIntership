@@ -7,14 +7,14 @@
 
 import UIKit
 
-
 extension MainPageController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? MainPageCollectionCell,
-           let text = cell.titleLabel.text {
+           let text = listToShow?[indexPath.row] {
+           let newChosenText = text.title
             cell.selectedImage.isHidden = (cell.selectedImage.isHidden == false) ? true : false
-            chosenText = (chosenText == text) ? nil : text
+            chosenText = (chosenText == newChosenText) ? nil : newChosenText
         }
     }
     
@@ -26,17 +26,17 @@ extension MainPageController: UICollectionViewDelegate {
 }
 
 extension MainPageController: UICollectionViewDataSource {
-    
+       
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let list = list else { return 0}
+        guard let list = listToShow else { return 0 }
         return list.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainPageCollectionCell.identifier, for: indexPath) as? MainPageCollectionCell,
-              let list = list?[indexPath.row]
+              let list = listToShow?[indexPath.row]
         else { return UICollectionViewCell() }
-        cell.update(list: list)
+        cell.showCell(list: list) // view tells cell that is ready for transfering data
         return cell
     }
 }

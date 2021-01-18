@@ -7,7 +7,17 @@
 
 import UIKit
 
+protocol MainPageCollectionCellInput: AnyObject {
+    func showCell(list: List)
+}
+
+protocol MainPageCollectionCellOutput  {
+   
+}
+
 final class MainPageCollectionCell: UICollectionViewCell {
+    
+    var view: MainPageCollectionCellOutput?
     
     static let identifier = "MainPageCollectionCell"
     
@@ -16,7 +26,7 @@ final class MainPageCollectionCell: UICollectionViewCell {
         return icon
     }()
     
-    lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 21)
@@ -46,9 +56,7 @@ final class MainPageCollectionCell: UICollectionViewCell {
         icon.isHidden = true
         return icon
     }()
-    
-    var count = 0
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -96,13 +104,17 @@ final class MainPageCollectionCell: UICollectionViewCell {
             selectedImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
     }
+}
+
+extension MainPageCollectionCell: MainPageCollectionCellInput {
     
-    func update(list: List) {
+    func showCell(list: List) {
+        guard let icon = list.icon["52x52"] else { return }
         if list.isSelected == true {
             titleLabel.text = list.title
             descriptionLabel.text = list.description
             priceLabel.text = list.price
-            iconImage.downloaded(from: list.icon["52x52"]!)
+            iconImage.downloaded(from: icon)
         } else {
             contentView.isHidden = true
         }

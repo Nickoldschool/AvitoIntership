@@ -17,6 +17,10 @@
 		401CAAD125A34AD4006E1AD0 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401CAAD025A34AD4006E1AD0 /* Parsing.swift */; };
 		401CAAE125A34FEB006E1AD0 /* result.json in Resources */ = {isa = PBXBuildFile; fileRef = 401CAAE025A34FEB006E1AD0 /* result.json */; };
 		4027E01825B43E8D00C6B25A /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4027E01725B43E8D00C6B25A /* Alert.swift */; };
+		4027E03025B4830A00C6B25A /* MainPageAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4027E02F25B4830A00C6B25A /* MainPageAssembly.swift */; };
+		4027E03325B4872500C6B25A /* MainPageInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4027E03225B4872500C6B25A /* MainPageInteractor.swift */; };
+		4027E03725B4883E00C6B25A /* MainPagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4027E03625B4883E00C6B25A /* MainPagePresenter.swift */; };
+		4027E03A25B4892200C6B25A /* MainPageRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4027E03925B4892200C6B25A /* MainPageRouter.swift */; };
 		40E0566925ADCA1000B33E0B /* UIImageView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E0566825ADCA1000B33E0B /* UIImageView+.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +37,10 @@
 		401CAAD025A34AD4006E1AD0 /* Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 		401CAAE025A34FEB006E1AD0 /* result.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = result.json; sourceTree = "<group>"; };
 		4027E01725B43E8D00C6B25A /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		4027E02F25B4830A00C6B25A /* MainPageAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageAssembly.swift; sourceTree = "<group>"; };
+		4027E03225B4872500C6B25A /* MainPageInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageInteractor.swift; sourceTree = "<group>"; };
+		4027E03625B4883E00C6B25A /* MainPagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPagePresenter.swift; sourceTree = "<group>"; };
+		4027E03925B4892200C6B25A /* MainPageRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageRouter.swift; sourceTree = "<group>"; };
 		40E0566825ADCA1000B33E0B /* UIImageView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,9 +76,7 @@
 			children = (
 				401CAAB925A241C9006E1AD0 /* Application */,
 				401CAACA25A34AAC006E1AD0 /* Parsing */,
-				4027E01425B43CF200C6B25A /* Model */,
-				4027E01525B43CFC00C6B25A /* View */,
-				4027E01625B43D0200C6B25A /* Controller */,
+				4027E02725B481DE00C6B25A /* MainPage */,
 				40E0566B25ADCA1A00B33E0B /* Extensions */,
 				4027E01025B4233F00C6B25A /* Alert */,
 				401CAA9E25A23E10006E1AD0 /* Assets.xcassets */,
@@ -105,29 +111,67 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
-		4027E01425B43CF200C6B25A /* Model */ = {
+		4027E01425B43CF200C6B25A /* MainPageEntity */ = {
 			isa = PBXGroup;
 			children = (
 				401CAAC625A349F6006E1AD0 /* JsonModel.swift */,
 			);
-			path = Model;
+			path = MainPageEntity;
 			sourceTree = "<group>";
 		};
-		4027E01525B43CFC00C6B25A /* View */ = {
-			isa = PBXGroup;
-			children = (
-				401CAAB625A24114006E1AD0 /* MainPageCollectionCell.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		4027E01625B43D0200C6B25A /* Controller */ = {
+		4027E01525B43CFC00C6B25A /* MainPageView */ = {
 			isa = PBXGroup;
 			children = (
 				401CAAAA25A23E51006E1AD0 /* MainPageController.swift */,
 				401CAAAD25A23EE2006E1AD0 /* MainPageController+.swift */,
+				401CAAB625A24114006E1AD0 /* MainPageCollectionCell.swift */,
 			);
-			path = Controller;
+			path = MainPageView;
+			sourceTree = "<group>";
+		};
+		4027E02725B481DE00C6B25A /* MainPage */ = {
+			isa = PBXGroup;
+			children = (
+				4027E02A25B4823F00C6B25A /* MainPageAssembly */,
+				4027E01525B43CFC00C6B25A /* MainPageView */,
+				4027E02B25B4825300C6B25A /* MainPageInteractor */,
+				4027E02C25B4825E00C6B25A /* MainPagePresenter */,
+				4027E01425B43CF200C6B25A /* MainPageEntity */,
+				4027E02D25B4829000C6B25A /* MainPageRouter */,
+			);
+			path = MainPage;
+			sourceTree = "<group>";
+		};
+		4027E02A25B4823F00C6B25A /* MainPageAssembly */ = {
+			isa = PBXGroup;
+			children = (
+				4027E02F25B4830A00C6B25A /* MainPageAssembly.swift */,
+			);
+			path = MainPageAssembly;
+			sourceTree = "<group>";
+		};
+		4027E02B25B4825300C6B25A /* MainPageInteractor */ = {
+			isa = PBXGroup;
+			children = (
+				4027E03225B4872500C6B25A /* MainPageInteractor.swift */,
+			);
+			path = MainPageInteractor;
+			sourceTree = "<group>";
+		};
+		4027E02C25B4825E00C6B25A /* MainPagePresenter */ = {
+			isa = PBXGroup;
+			children = (
+				4027E03625B4883E00C6B25A /* MainPagePresenter.swift */,
+			);
+			path = MainPagePresenter;
+			sourceTree = "<group>";
+		};
+		4027E02D25B4829000C6B25A /* MainPageRouter */ = {
+			isa = PBXGroup;
+			children = (
+				4027E03925B4892200C6B25A /* MainPageRouter.swift */,
+			);
+			path = MainPageRouter;
 			sourceTree = "<group>";
 		};
 		40E0566B25ADCA1A00B33E0B /* Extensions */ = {
@@ -210,12 +254,16 @@
 			files = (
 				401CAAC725A349F6006E1AD0 /* JsonModel.swift in Sources */,
 				40E0566925ADCA1000B33E0B /* UIImageView+.swift in Sources */,
+				4027E03A25B4892200C6B25A /* MainPageRouter.swift in Sources */,
 				401CAAB725A24114006E1AD0 /* MainPageCollectionCell.swift in Sources */,
 				401CAAAB25A23E51006E1AD0 /* MainPageController.swift in Sources */,
+				4027E03725B4883E00C6B25A /* MainPagePresenter.swift in Sources */,
 				401CAA9625A23E0E006E1AD0 /* AppDelegate.swift in Sources */,
 				401CAAD125A34AD4006E1AD0 /* Parsing.swift in Sources */,
+				4027E03325B4872500C6B25A /* MainPageInteractor.swift in Sources */,
 				4027E01825B43E8D00C6B25A /* Alert.swift in Sources */,
 				401CAAAE25A23EE2006E1AD0 /* MainPageController+.swift in Sources */,
+				4027E03025B4830A00C6B25A /* MainPageAssembly.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
